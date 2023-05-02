@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='css/home.css') }}"
+    />
+    <title>Student Dashboard</title>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Student Dashboard</h1>
+      <div class="btn-container">
+        <a href="#" class="btn">Registration</a>
+        <a href="#" class="btn">Student Services</a>
+        <a href="{{ url_for('enrollment') }}" class="btn">Module Enrollment</a>
+        <a href="#" class="btn">Payment Information</a>
+        <a href="{{ url_for('logout') }}" class="btn">Logout</a>
+      </div>
+    </div>
+  </body>
+</html>

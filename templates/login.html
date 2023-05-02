@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/login.css') }}">
+	<title>University Enrollment System</title>
+</head>
+<body>
+	<div class="container">
+		<h1>Login</h1>
+		<form action="{{ url_for('login') }}" method="post">
+			<label for="username">Username:</label>
+			<input type="text" id="username" name="username"><br><br>
+			<label for="password">Password:</label>
+			<input type="password" id="password" name="password"><br><br>
+			{% if error %}
+				<p style="color: red;">{{ error }}</p>
+			{% endif %}
+			<input type="submit" value="Login">
+		</form>
+		<p>Don't have an account? <a href="{{ url_for('registration') }}">Register here</a></p>
+	</div>
+</body>
+</html>

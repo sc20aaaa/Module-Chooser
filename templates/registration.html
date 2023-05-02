@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='css/registration.css') }}"
+    />
+    <title>University Enrollment System - Register</title>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Register</h1>
+      <input type="hidden" value="{{user_arr}}" class="user-arr-field" />
+      <p class="error"></p>
+      <form action="{{ url_for('registration') }}" method="post">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" /><br /><br />
+        <label for="email">Email:</label>
+        <input type="text" id="email" name="email" /><br /><br />
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" /><br /><br />
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" /><br /><br />
+
+        <div class="interest-wrapper">
+          <h1>Interests</h1>
+          <div class="interest">
+            <input
+              type="checkbox"
+              value="programming"
+              name="mycheckbox"
+              id="programming"
+            />
+            <label for="programming" class="interest"> Programming </label>
+          </div>
+          <div class="interest">
+            <input
+              type="checkbox"
+              value="web development"
+              name="mycheckbox"
+              id="web development"
+            />
+            <label for="web development" class="interest">
+              Web Development
+            </label>
+          </div>
+          <div class="interest">
+            <input
+              type="checkbox"
+              name="mycheckbox"
+              id="computing"
+              value="computing"
+            />
+            <label for="computing" class="interest"> Computing </label>
+          </div>
+          <div class="interest">
+            <input
+              type="checkbox"
+              value="design"
+              name="mycheckbox"
+              id="design"
+            />
+            <label for="design" class="interest"> Design </label>
+          </div>
+          <div class="interest">
+            <input
+              type="checkbox"
+              value="machine learning"
+              name="mycheckbox"
+              id="machine"
+            />
+            <label for="machine" class="interest"> Machine Learning </label>
+          </div>
+          <div class="interest">
+            <input
+              type="checkbox"
+              value="security"
+              name="mycheckbox"
+              id="security"
+            />
+            <label for="security" class="interest"> Security </label>
+          </div>
+          <div class="interest">
+            <input
+              type="checkbox"
+              value="crypto"
+              name="mycheckbox"
+              id="crypto"
+            />
+            <label for="crypto" class="interest"> Crypto </label>
+          </div>
+          <div class="interest">
+            <input
+              type="checkbox"
+              value="visualization"
+              name="mycheckbox"
+              id="visualization"
+            />
+            <label for="visualization" class="interest"> Visualization </label>
+          </div>
+          <div class="interest">
+            <input
+              type="checkbox"
+              value="artificial intelligence"
+              name="mycheckbox"
+              id="artificial"
+            />
+            <label for="artificial" class="interest">
+              Artificial Intelligence
+            </label>
+          </div>
+          <div class="interest">
+            <input
+              type="checkbox"
+              value="graphics"
+              name="mycheckbox"
+              id="graphics"
+            />
+            <label for="graphics" class="interest"> Graphics </label>
+          </div>
+          <div class="interest">
+            <input
+              type="checkbox"
+              name="mycheckbox"
+              id="algorithms"
+              value="algorithms"
+            />
+            <label for="algorithms" class="interest"> Data Structure </label>
+          </div>
+          <div class="interest">
+            <input type="checkbox" name="mycheckbox" id="maths" value="maths" />
+            <label for="maths" class="interest"> Maths </label>
+          </div>
+          <div class="interest">
+            <input
+              type="checkbox"
+              name="mycheckbox"
+              id="business"
+              value="business"
+            />
+            <label for="business" class="interest"> Business </label>
+          </div>
+        </div>
+        <div class="interest-wrapper preference-wrapper">
+          <h1>Preference</h1>
+          <div class="interest">
+            <input
+              type="radio"
+              value="coursework"
+              name="mycheckboxP"
+              id="coursework"
+            />
+            <label for="coursework" class="interest"> Coursework </label>
+          </div>
+          <div class="interest">
+            <input
+              type="radio"
+              value="standard exam"
+              name="mycheckboxP"
+              id="standard exam"
+            />
+            <label for="standard exam" class="interest"> Standard Exam </label>
+          </div>
+          <div class="interest">
+            <input type="radio" value="Both" name="mycheckboxP" id="Both" />
+            <label for="Both" class="interest"> Both </label>
+          </div>
+        </div>
+        <input type="submit" value="Register" />
+      </form>
+    </div>
+
+    <script>
+      let form = document.querySelector("form");
+      function ValidateEmail(mail) {
+        if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail)) {
+          return true;
+        }
+
+        return false;
+      }
+
+      function validateName(str) {
+        return /^[A-Za-z\s]*$/.test(str);
+      }
+      function validateUsername(str) {
+        return /^[A-Za-z0-9\s]*$/.test(str);
+      }
+      function checkPassword(str) {
+        var re = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+        return re.test(str);
+      }
+      form.addEventListener("submit", (e) => {
+        let name = document.querySelector("#name").value;
+        let email = document.querySelector("#email").value;
+        let username = document.querySelector("#username").value;
+        let password = document.querySelector("#password").value;
+        let interestChecked = document.querySelector(
+          ".interest-wrapper input:checked"
+        );
+        let preferenceChecked = document.querySelector(
+          ".preference-wrapper input:checked"
+        );
+        let userArrFeild = document.querySelector(".user-arr-field").value;
+        let parseJson = JSON.parse(userArrFeild);
+        let exist = false;
+        let errorMessage = document.querySelector(".error");
+
+        e.preventDefault();
+
+        for (let i = 0; i < parseJson.length; i++) {
+          if (parseJson[i]["email"] == email) {
+            errorMessage.style.display = "block";
+            errorMessage.textContent = "Email already exists";
+            scrollTo(0, 0);
+            exist = true;
+            break;
+          }
+
+          if (parseJson[i]["username"] == username) {
+            errorMessage.style.display = "block";
+            errorMessage.textContent = "Username already exists";
+            scrollTo(0, 0);
+            exist = true;
+            break;
+          }
+        }
+        console.log(validateName(name));
+        if (exist == true) {
+          return;
+        }
+        if (name.length == 0) {
+          errorMessage.style.display = "block";
+          errorMessage.textContent = "Name field is mandatory";
+          scrollTo(0, 0);
+          return;
+        } else if (!validateName(name)) {
+          errorMessage.style.display = "block";
+          errorMessage.textContent =
+            "Name is invalid. You must only enter letters from the English alphabet.";
+          scrollTo(0, 0);
+          return;
+        } else if (name.length < 3) {
+          errorMessage.style.display = "block";
+          errorMessage.textContent = "Name should be at least 3 characters";
+          scrollTo(0, 0);
+          return;
+        }
+        if (email.length == 0) {
+          errorMessage.style.display = "block";
+          errorMessage.textContent = "Email field is mandatory";
+          scrollTo(0, 0);
+          return;
+        } else if (!ValidateEmail(email)) {
+          errorMessage.style.display = "block";
+          errorMessage.textContent = "Please enter a valid email";
+          scrollTo(0, 0);
+          return;
+        }
+
+        if (username.length == 0) {
+          errorMessage.style.display = "block";
+          errorMessage.textContent = "Username field is mandatory";
+          scrollTo(0, 0);
+          return;
+        } else if (!validateUsername(username)) {
+          errorMessage.style.display = "block";
+          errorMessage.textContent =
+            "Username is invalid. You must only enter letters and numbers.";
+          scrollTo(0, 0);
+          return;
+        } else if (username.length < 6) {
+          errorMessage.style.display = "block";
+          errorMessage.textContent = "Username should be at least 6 characters";
+          scrollTo(0, 0);
+          return;
+        }
+
+        if (password.length == 0) {
+          errorMessage.style.display = "block";
+          errorMessage.textContent = "Password field is mandatory";
+          scrollTo(0, 0);
+          return;
+        } else if (checkPassword(password) == false) {
+          errorMessage.style.display = "block";
+          errorMessage.textContent =
+            "Password must include at least one uppercase letter and at least 1 number and 1 special character.";
+          scrollTo(0, 0);
+          return;
+        } else if (password.length < 6) {
+          errorMessage.style.display = "block";
+          errorMessage.textContent = "Password should be at least 6 characters";
+          scrollTo(0, 0);
+          return;
+        }
+
+        if (interestChecked == null) {
+          errorMessage.style.display = "block";
+          errorMessage.textContent = "Please choose at least one interest";
+          scrollTo(0, 0);
+          return;
+        }
+
+        if (preferenceChecked == null) {
+          errorMessage.style.display = "block";
+          errorMessage.textContent = "Please choose a preference";
+          scrollTo(0, 0);
+          return;
+        }
+
+        if (exist == false) {
+          form.submit();
+        } else {
+          return;
+        }
+      });
+    </script>
+  </body>
+</html>

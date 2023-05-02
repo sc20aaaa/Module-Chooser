@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Confirmation</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='css/enrollment.css') }}"
+    />
+  </head>
+  <body>
+    <h1>Enrollment Confirmation</h1>
+    <p>Thank you for enrolling in the following modules:</p>
+    <input type="hidden" value="{{name}}" class="name-hidden" />
+    <input type="hidden" value="{{email}}" class="email-hidden" />
+    <input type="hidden" value="{{stringEnrolled}}" class="enrolled-hidden" />
+
+    <table class="table-confirm">
+      <thead>
+        <tr>
+          <th>Module Code</th>
+          <th>Module Name</th>
+          <th>Credits</th>
+          <th>Semester</th>
+          <th>Module Description</th>
+          <th>
+            Module Rating
+            <span
+              class="tooltip-icon"
+              onmouseover="showTooltip(this)"
+              onmouseout="hideTooltip(this)"
+              >(?)</span
+            >
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for module in enrolled_modules %}
+        <tr>
+          <td>{{ module.code }}</td>
+          <td>{{ module.name }}</td>
+          <td>{{ module.credits }}</td>
+          <td>{{ module.semester }}</td>
+          <td class="description-module">{{ module.description }}</td>
+          <td class="module-rating">
+            {{ module.rating }} %
+            <span class="tooltip">{{ module.tooltip }}</span>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <p class="confirm-heading">Please confirm your enrollment details.</p>
+    <form
+      action="{{ url_for('home') }}"
+      method="post"
+      class="form-confirmation"
+      enctype="multipart/form-data"
+    >
+      <label for="name">Name:</label>
+      <input type="text" name="name" value="{{name}}" class="name" required />
+      <br />
+      <label for="email">Email:</label>
+      <input
+        type="email"
+        name="email"
+        value="{{email}}"
+        class="email"
+        required
+      />
+      <br />
+      <button type="submit" class="confirm-enrollment">
+        Confirm Enrollment
+      </button>
+    </form>
+
+    <script>
+      let confirmButton = document.querySelector(".confirm-enrollment");
+      confirmButton.addEventListener("click", (e) => {
+        e.preventDefault();
+        let student_details = {
+          name: document.querySelector(".name").value,
+          email: document.querySelector(".email").value,
+          EnrolledHidden: document.querySelector(".enrolled-hidden").value,
+        };
+
+        let NameHidden = document.querySelector(".name-hidden").value;
+        let EmailHidden = document.querySelector(".email-hidden").value;
+        let EnrolledHidden = document.querySelector(".enrolled-hidden").value;
+
+        if (
+          student_details.name != NameHidden ||
+          student_details.email != EmailHidden
+        ) {
+          window.alert("Please Enter Correct Email And Name");
+          return;
+        }
+
+        var form = document.createElement("form");
+        form.action = "{{ url_for('enrollment_submit') }}";
+        form.method = "post";
+        var hiddenField = document.createElement("input");
+        hiddenField.type = "hidden";
+        hiddenField.name = "student_details";
+        hiddenField.value = JSON.stringify(student_details);
+        hiddenField.value = JSON.stringify(student_details);
+        form.appendChild(hiddenField);
+        document.body.appendChild(form);
+        form.submit();
+      });
+    </script>
+  </body>
+</html>

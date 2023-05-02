@@ -1,0 +1,107 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
+
+* {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+}
+
+/* Center the content */
+.error {
+  background-color: #f9d7da;
+  width: 100%;
+  padding: 1rem 1rem;
+  width: 400px;
+  color: #721c23;
+  border: 1px solid #721c23;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  display: none;
+}
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 4rem 0rem;
+  margin: 0;
+  flex-direction: column;
+  font-family: "Inter", sans-serif !important;
+}
+
+.container > h1 {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+form {
+  width: 400px;
+}
+
+/* Set styles for the registration form */
+form {
+  border: 1px solid #ddd;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: #f9f9f9;
+}
+
+form label {
+  display: block;
+  margin-bottom: 8px;
+}
+
+form input[type="text"],
+form input[type="password"] {
+  width: 100%;
+  max-width: 350px; /* add max-width property */
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  font-size: 16px;
+}
+
+form input[type="submit"] {
+  background-color: #0066cc;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 3px;
+  font-size: 16px;
+  margin-top: 1rem;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+form input[type="submit"]:hover {
+  background-color: #0059b3;
+}
+
+.interest-wrapper {
+  margin-top: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+.interest-wrapper > h1 {
+  margin-bottom: 1rem;
+  font-size: 20px;
+  width: 100%;
+  color: #0059b3;
+}
+.interest-wrapper .interest > input {
+  display: none;
+}
+
+.interest-wrapper .interest > label {
+  background-color: #71ade8;
+  border-radius: 99px;
+  color: #fff;
+  display: inline-block;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+.interest-wrapper .interest > input:checked + label {
+  background-color: #0066cc;
+}

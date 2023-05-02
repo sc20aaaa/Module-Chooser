@@ -1,0 +1,179 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
+* {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+}
+body {
+  font-family: "Inter", sans-serif !important;
+  padding: 2rem;
+}
+body > h1 {
+  margin-bottom: 1rem;
+}
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 12px 8px;
+}
+
+th {
+  background-color: #0066cc;
+  color: white;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+input[type="checkbox"] {
+  transform: scale(1.5);
+  margin: 0 10px;
+}
+
+input[type="submit"] {
+  background-color: #0066cc;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  padding: 10px 20px;
+  margin-top: 20px;
+  cursor: pointer;
+}
+
+input[type="submit"]:hover {
+  background-color: #0059b3;
+}
+.module-rating-th {
+  position: relative;
+}
+
+.tooltip {
+  position: absolute;
+  top: -40px;
+  left: 10%;
+  transform: translateX(-50%);
+  display: none;
+  width: 200px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  padding: 5px;
+  border-radius: 5px;
+  z-index: 1; /* add z-index to make sure tooltip is displayed on top */
+}
+
+.tooltip::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+.module-rating-th .tooltip {
+  width: 300px;
+  top: -80px;
+}
+.module-rating-th:hover .tooltip {
+  display: block;
+}
+td:hover .tooltip {
+  display: block;
+}
+
+td {
+  position: relative;
+  min-width: 100px;
+}
+.description-module {
+  cursor: pointer;
+}
+.description-module > * {
+  pointer-events: none;
+  color: #0059b3;
+  text-decoration: underline;
+}
+.description-module span {
+  display: none;
+}
+.need-credit {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  font-size: 18px;
+  font-weight: 600;
+}
+#enroll_button {
+  background-color: #0066cc;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 3px;
+  font-size: 16px;
+  cursor: pointer;
+}
+#enroll_button:hover {
+  background-color: #0059b3;
+}
+#logout_button {
+  background-color: #0066cc;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 3px;
+  font-size: 16px;
+  cursor: pointer;
+}
+#logout_button:hover {
+  background-color: #0059b3;
+}
+
+.table-confirm {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.confirm-heading {
+  font-weight: 600;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.form-confirmation {
+  border: 1px solid #ddd;
+  padding: 20px;
+  width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+}
+.form-confirmation input {
+  width: 100%;
+  padding: 10px 20px; /* Add this line */
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  font-size: 16px;
+}
+.form-confirmation button {
+  background-color: #0066cc;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 3px;
+  font-size: 16px;
+  cursor: pointer;
+}
+.tooltip-type {
+  text-transform: capitalize;
+}

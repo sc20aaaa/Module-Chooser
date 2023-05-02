@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>University Enrollment System</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='css/enrollment.css') }}"
+    />
+    <script type="text/javascript">
+      let credits = 0;
+      let credits_remaining = 40;
+
+      window.addEventListener("load", (e) => {
+        let creditCheckbox = document.querySelectorAll(".credit-checkbox");
+        let enrollbutton = document.querySelector("#enroll_button");
+        let descriptionModule = document.querySelectorAll(
+          ".description-module p"
+        );
+
+        descriptionModule.forEach((EachModule) => {
+          let EnterVal = EachModule.textContent.substring(0, 30);
+          EachModule.textContent = `${EnterVal}...`;
+        });
+
+        enrollbutton.addEventListener("click", enroll);
+
+        creditCheckbox.forEach((EachCheckbox) => {
+          EachCheckbox.addEventListener("click", updateCredits);
+        });
+
+        creditCheckbox.forEach((EachCheckbox) => {
+          credits =
+            credits + parseInt(EachCheckbox.getAttribute("data-credits"));
+        });
+
+        document.getElementById("credits_remaining").innerHTML = "40";
+        document.getElementById("credits_total").innerHTML = "40";
+      });
+
+      function showTooltip(el) {
+        var tooltip = el.nextElementSibling;
+        tooltip.style.display = "block";
+      }
+
+      function hideTooltip(el) {
+        var tooltip = el.nextElementSibling;
+        tooltip.style.display = "none";
+      }
+
+      function updateCredits(e) {
+        var checkboxes = document.getElementsByName("enroll");
+
+        console.log("workign");
+        let relatedCheckbox = parseInt(e.target.getAttribute("data-credits"));
+
+        let id = e.target.id;
+        let allcheckboxpossible = document.querySelectorAll(`#${id}`);
+        console.log(allcheckboxpossible);
+        console.log(id);
+
+        allcheckboxpossible.forEach((Each) => {
+          if (e.target.checked == true) {
+            Each.checked = true;
+          } else {
+            Each.checked = false;
+          }
+        });
+
+        if (e.target.checked == true) {
+          credits_remaining = credits_remaining - relatedCheckbox;
+        } else {
+          credits_remaining = credits_remaining + relatedCheckbox;
+        }
+
+        document.getElementById("credits_remaining").innerHTML =
+          credits_remaining.toString();
+        document.getElementById("credits_total").innerHTML = "40";
+        if (credits_remaining < 0) {
+          document.getElementById("enroll_button").disabled = true;
+          document.getElementById("error_message").innerHTML =
+            "You have selected too many credits.";
+        } else {
+          document.getElementById("enroll_button").disabled = false;
+          document.getElementById("error_message").innerHTML = "";
+        }
+      }
+
+      function enroll(e) {
+        var checkboxes = document.getElementsByName("enroll");
+
+        e.preventDefault();
+        var enrolledModules = [];
+
+        for (var i = 0; i < checkboxes.length; i++) {
+          if (checkboxes[i].checked) {
+            enrolledModules.push(checkboxes[i].value);
+          }
+        }
+
+        if (credits_remaining == 40) {
+          alert("Please enroll in modules");
+          return false;
+        }
+        if (credits_remaining < 0) {
+          alert("You have selected too many credits.");
+          // e.preventDefault();
+          return false; // prevent the form from being submitted
+        } else if (credits_remaining > 0 && credits_remaining < 40) {
+          // display a pop-up message if credits remaining is less than 40
+          var message =
+            "You need to enroll in " + credits_remaining + " more credits";
+          alert(message);
+          // e.preventDefault();
+          return false;
+        } else {
+          var form = document.createElement("form");
+          form.action = "{{ url_for('confirmation') }}";
+          form.method = "post";
+          var hiddenField = document.createElement("input");
+          hiddenField.type = "hidden";
+          hiddenField.name = "enrolled_modules";
+          hiddenField.value = JSON.stringify(enrolledModules);
+          form.appendChild(hiddenField);
+          document.body.appendChild(form);
+          form.submit();
+        }
+
+        return false; // prevent the form from being submitted
+      }
+    </script>
+  </head>
+  <body>
+    {% if jsonData != None %}
+    <h1>You have enrolled in the following modules.</h1>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Module Code</th>
+          <th>Module Name</th>
+          <th>Credits</th>
+          <th>Semester</th>
+          <th>Module Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for module in jsonData %}
+        <tr>
+          <td>{{ module.code }}</td>
+          <td>
+            {{ module.name }}
+            <span class="tooltip tooltip-type">{{ module.type }}</span>
+          </td>
+          <td>{{ module.credits }}</td>
+          <td>{{ module.semester }}</td>
+          <td class="description-module">
+            <span>{{module.link}}</span>
+            <p>{{ module.description }}</p>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <div class="buttons-wrapper" style="display: flex">
+      <form
+        action="{{ url_for('home') }}"
+        method="GET"
+        style="margin-top: 20px; margin-right: 20px"
+        enctype="multipart/form-data"
+      >
+        <button type="submit" id="logout_button">Home</button>
+      </form>
+    </div>
+
+    {% endif %}
+    <input type="hidden" value="{{jsonData}}" id="jsonhiddenVal" />
+    {% if jsonData == None %}
+    <h1>Enrollment</h1>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Module Code</th>
+          <th>Module Name</th>
+          <th>Credits</th>
+          <th>Semester</th>
+          <th>Module Description</th>
+          <th class="module-rating-th">
+            Module Rating
+            <span class="tooltip-icon">(?)</span>
+            <span class="tooltip tooltip-type" style="text-transform: unset"
+              >Module ratings are based on the number of students that are
+              enrolled in a particular module.</span
+            >
+          </th>
+          <th>Enroll</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for module in modules %}
+        <tr>
+          <td>{{ module.code }}</td>
+          <td>
+            {{ module.name }}
+            <span class="tooltip tooltip-type">{{ module.type }}</span>
+          </td>
+          <td>{{ module.credits }}</td>
+          <td>{{ module.semester }}</td>
+          <td class="description-module">
+            <span>{{module.link}}</span>
+            <p>{{ module.description }}</p>
+          </td>
+          <td class="module-rating">{{ module.rating }}%</td>
+          <td>
+            <input
+              type="checkbox"
+              name="enroll"
+              id="{{module.code}}"
+              class="credit-checkbox"
+              value="{{ module.code }}"
+              data-credits="{{ module.credits }}"
+            />
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <h1 style="margin-top: 20px">Recommended</h1>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Module Code</th>
+          <th>Module Name</th>
+          <th>Credits</th>
+          <th>Semester</th>
+          <th>Module Description</th>
+          <th>Reason For Recommendation</th>
+          <th class="module-rating-th">
+            Module Rating
+            <span class="tooltip-icon">(?)</span>
+            <span class="tooltip tooltip-type" style="text-transform: unset"
+              >Module ratings are based on the number of students that are
+              enrolled in a particular module.</span
+            >
+          </th>
+          <th>Enroll</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for module in interestarr %}
+        <tr>
+          <td>{{ module.code }}</td>
+          <td>
+            {{ module.name }}
+            <span class="tooltip tooltip-type">{{ module.type }}</span>
+          </td>
+          <td>{{ module.credits }}</td>
+          <td>{{ module.semester }}</td>
+          <td class="description-module">
+            <span>{{module.link}}</span>
+            <p>{{ module.description }}</p>
+          </td>
+          <td>{{module.choose}}</td>
+          <td class="module-rating">{{ module.rating }}%</td>
+          <td>
+            <input
+              type="checkbox"
+              name="enroll"
+              id="{{module.code}}"
+              class="credit-checkbox"
+              value="{{ module.code }}"
+              data-credits="{{ module.credits }}"
+            />
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <p class="need-credit">
+      You need <span id="credits_remaining"></span> credits remaining out of
+      <span id="credits_total"></span>
+    </p>
+    <p id="error_message" style="color: red"></p>
+    <div class="buttons-wrapper">
+      <form
+        action="{{ url_for('confirmation') }}"
+        method="post"
+        enctype="multipart/form-data"
+      >
+        <button type="submit" id="enroll_button">Enroll</button>
+      </form>
+
+      <form
+        action="{{ url_for('home') }}"
+        method="GET"
+        style="margin-top: 10px"
+        enctype="multipart/form-data"
+      >
+        <button type="submit" id="logout_button">Home</button>
+      </form>
+    </div>
+    {% endif %}
+    <script>
+      let description_module = document.querySelectorAll(".description-module");
+      description_module.forEach((EachModule) => {
+        EachModule.addEventListener("click", redirectLink);
+      });
+      function redirectLink(e) {
+        let span = e.target.querySelector("span");
+        let a = document.createElement("a");
+        a.target = "_blank";
+        a.href = span.textContent;
+        a.click();
+      }
+    </script>
+    <script>
+      let tooltipType = document.querySelectorAll(".tooltip-type");
+
+      String.prototype.removeCharAt = function (i) {
+        var tmp = this.split(""); // convert to an array
+        tmp.splice(i - 1, 1); // remove 1 element from the array (adjusting for non-zero-indexed counts)
+        return tmp.join(""); // reconstruct the string
+      };
+
+      tooltipType.forEach((EachType) => {
+        let TextContent = EachType.textContent.split(",");
+        let firstpush = "";
+        TextContent.forEach((Each) => {
+          let d = Each.replaceAll("[", "");
+          let e = d.replaceAll("]", "");
+          let c = e.replaceAll("'", "");
+          let last = c.trim();
+          firstpush += `${last} and `;
+        });
+        let string = firstpush.substring(0, firstpush.length - 4);
+        EachType.textContent = string;
+      });
+    </script>
+  </body>
+</html>

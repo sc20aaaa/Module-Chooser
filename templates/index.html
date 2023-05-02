@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='css/index.css') }}"
+    />
+    <title>University Enrollment System</title>
+    <style>
+      #logout_button {
+        background-color: #0066cc;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 3px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+      #logout_button:hover {
+        background-color: #0059b3;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>Welcome to the University Enrollment System</h1>
+      </div>
+      <div class="content">
+        <p>Please <a href="{{ url_for('login') }}">login</a> to continue.</p>
+      </div>
+    </div>
+  </body>
+</html>
